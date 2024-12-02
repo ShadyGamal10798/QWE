@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Blossoming Beauty Countdown 🌺</title>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes colorPulse {
+            0% { background-color: #FFD1DC; }
+            50% { background-color: #FFB6C1; }
+            100% { background-color: #FFD1DC; }
+        }
+
+        @keyframes floatAndSway {
+            0% { transform: translateY(0) rotate(-5deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+            100% { transform: translateY(0) rotate(-5deg); }
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #FFD1DC, #FFEBEF);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            text-align: center;
+            color: #333;
+            animation: colorPulse 10s infinite alternate;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            animation: fadeIn 1.5s ease-out, bounce 1s ease-in-out;
+            transform-origin: center;
+        }
+
+        h1 {
+            animation: floatAndSway 3s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        #countdown {
+            font-size: 2.5rem;
+            color: #FF69B4;
+            margin: 20px 0;
+            font-weight: bold;
+            animation: bounce 1s ease-in-out infinite alternate;
+        }
+
+        .celebration {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 192, 203, 0.8);
+            z-index: 1000;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: #f2d74e;
+            top: -10px;
+            opacity: 0;
+            animation: fall 5s linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 1;
+            }
+        }
+
+        .floating-hearts {
+            position: absolute;
+            pointer-events: none;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Blossoming Beauty Countdown 🌺</h1>
+        <div id="countdown">Calculating...</div>
+        <p id="status">Gentle Healing in Progress ✨</p>
+    </div>
+
+    <div class="celebration" id="celebration">
+        <!-- Confetti will be dynamically added here -->
+    </div>
+
+    <script>
+        // Cycle tracking configuration
+        const startDate = new Date('2024-12-02T18:00:00');
+        const cycleDuration = 5; // Average cycle duration in days
+
+        function createFloatingHearts() {
+            const colors = ['#FF69B4', '#FFB6C1', '#FF1493', '#FFC0CB'];
+            const container = document.body;
+
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤️';
+                heart.classList.add('floating-hearts');
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.color = colors[Math.floor(Math.random() * colors.length)];
+                heart.style.fontSize = (Math.random() * 30 + 10) + 'px';
+                heart.style.animationDelay = Math.random() * 5 + 's';
+                heart.style.animation = `floatAndSway ${Math.random() * 5 + 3}s ease-in-out infinite`;
+                container.appendChild(heart);
+            }
+        }
+
+        function createConfetti() {
+            const colors = ['#f2d74e', '#95c3de', '#ff9a91', '#f2d74e', '#ffe5b4'];
+            const celebration = document.getElementById('celebration');
+            celebration.style.display = 'block';
+
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.classList.add('confetti');
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 5 + 's';
+                celebration.appendChild(confetti);
+            }
+        }
+
+        function updateCountdown() {
+            const now = new Date();
+            const endDate = new Date(startDate);
+            endDate.setDate(startDate.getDate() + cycleDuration);
+
+            const difference = endDate - now;
+            const container = document.getElementById('countdown');
+            const statusElement = document.getElementById('status');
+
+            if (difference > 0) {
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+                container.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+                statusElement.innerHTML = 'Gentle Self-Care Moment 🌷';
+            } else {
+                container.innerHTML = 'Bloom Complete! 🎉';
+                statusElement.innerHTML = 'Radiant Energy Restored ✨';
+                createConfetti();
+            }
+        }
+
+        // Initial setup with animations
+        window.onload = function() {
+            createFloatingHearts();
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        };
+    </script>
+</body>
+</html>
